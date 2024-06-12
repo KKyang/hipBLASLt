@@ -1356,7 +1356,7 @@ rocblaslt_status
         {
             std::vector<rocblaslt_matmul_heuristic_result> allSolutionsResults;
             if(rocblaslt_status_success
-               == getAllSolutions(prob, handle, allSolutionsResults, pref->max_workspace_bytes))
+               == getAllSolutions(prob, handle, tensile_data, allSolutionsResults, pref->max_workspace_bytes))
             {
                 int oriReturnAlgoCount = *returnAlgoCount;
                 for(int i = 0;
@@ -1504,6 +1504,17 @@ rocblaslt_status rocblaslt_matmul_get_all_algos_cpp(
     matmul_desc.op_B                  = opB;
     matmul_desc.compute_type          = typeCompute;
     matmul_desc.scale_type            = typeD;
+    initTensileGemmData(nullptr,
+                        typeGemm,
+                        opA,
+                        opB,
+                        typeA,
+                        typeB,
+                        typeC,
+                        typeD,
+                        typeCompute,
+                        0,
+                        matmul_desc.m_data);
     rocblaslt_status status           = rocblaslt_status_success;
     size_t           maxWorkspaceSize = std::numeric_limits<size_t>::max();
     try
@@ -1514,14 +1525,15 @@ rocblaslt_status rocblaslt_matmul_get_all_algos_cpp(
 
         auto prob = construct_rocblaslt_problem(
             handle, &matmul_desc, &matA, &matB, &matC, &matD, &alpha, &beta, maxWorkspaceSize);
+        setCustomTypeStatus(typeGemm, prob.epilogue, matmul_desc.m_data);
         if(typeGemm == rocblaslt::RocGemmType::ROCBLASLT_GEMM)
         {
-            status = getAllSolutions(prob, handle, heuristicResults, maxWorkspaceSize);
+            status = getAllSolutions(prob, handle, matmul_desc.m_data, heuristicResults, maxWorkspaceSize);
         }
         else if(typeGemm == rocblaslt::RocGemmType::ROCBLASLT_GROUPED_GEMM)
         {
             std::vector<RocblasltContractionProblem> probs = {prob};
-            status = getAllSolutions(probs, handle, heuristicResults, maxWorkspaceSize);
+            status = getAllSolutions(probs, handle, matmul_desc.m_data, heuristicResults, maxWorkspaceSize);
         }
         else
         {

@@ -101,6 +101,7 @@ if( BUILD_WITH_TENSILE )
 
   set( Tensile_SRC
     src/amd_detail/rocblaslt/src/tensile_host.cpp
+    src/amd_detail/rocblaslt/src/rocblaslt_custom.cpp
   )
 
   set( Tensile_INC
@@ -111,7 +112,9 @@ endif( ) # BUILD_WITH_TENSILE
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/src/amd_detail/rocblaslt/src/kernels/CompileSourceKernel.cmake)
 
-CompileSourceKernel(${CMAKE_CURRENT_SOURCE_DIR}/src/amd_detail/rocblaslt/src/kernels/matrix_transform.cpp "${Tensile_ARCHITECTURE}" ${PROJECT_BINARY_DIR}/Tensile/library)
+CompileSourceKernel(${CMAKE_CURRENT_SOURCE_DIR}/src/amd_detail/rocblaslt/src/kernels/matrix_transform.cpp "${Tensile_ARCHITECTURE}" "hipblasltTransform" ${PROJECT_BINARY_DIR}/Tensile/library)
+CompileSourceKernel(${CMAKE_CURRENT_SOURCE_DIR}/src/amd_detail/rocblaslt/src/kernels/gemm_silu.cpp "${Tensile_ARCHITECTURE}" "hipblasltGemmSilu" ${PROJECT_BINARY_DIR}/Tensile/library)
+
 
 set(DL_LIB dl)
 

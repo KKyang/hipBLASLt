@@ -286,6 +286,10 @@ void initTensileGemmData(rocblaslt_handle       handle,
                          size_t                 maxWorkspaceBytes,
                          std::shared_ptr<void>& gemmData);
 
+void setCustomTypeStatus(const rocblaslt::RocGemmType gemmType,
+                         const rocblaslt_epilogue epilogue,
+                         std::shared_ptr<void>& gemmData);
+
 /*******************************************************************************
  * runContractionProblem() solves a RocblasltContractionProblem *
  *******************************************************************************/
@@ -370,11 +374,13 @@ inline bool& rocblaslt_suppress_tensile_error_messages()
 
 rocblaslt_status getAllSolutions(RocblasltContractionProblem&                    prob,
                                  rocblaslt_handle                                handle,
+                                 std::shared_ptr<void>                           gemmData,
                                  std::vector<rocblaslt_matmul_heuristic_result>& heuristicResults,
                                  size_t                                          maxWorkSpaceBytes);
 
 rocblaslt_status getAllSolutions(std::vector<RocblasltContractionProblem>&       probs,
                                  rocblaslt_handle                                handle,
+                                 std::shared_ptr<void>                           gemmData,
                                  std::vector<rocblaslt_matmul_heuristic_result>& heuristicResults,
                                  size_t                                          maxWorkSpaceBytes);
 
