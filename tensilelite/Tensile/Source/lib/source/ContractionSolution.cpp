@@ -851,7 +851,7 @@ namespace Tensile
             gsuc     = param.gsuc() > 0 ? param.gsuc() : sizeMapping.globalSplitUCoalesced;
             gsuwgmrr = param.gsuwgmrr() > 0 ? param.gsuwgmrr() : sizeMapping.globalSplitUWorkGroupMappingRoundRobin;
         }
-        
+
         internalArg0
             = internalArg0 | ((uint32_t)gsuc << 15) | ((uint32_t)gsuwgmrr << 14) | (mask14 & gsu);
 
@@ -1531,7 +1531,7 @@ namespace Tensile
 
         rv.args.reserve(512, 64);
 
-        rv.workGroupSize.x = 256;
+        rv.workGroupSize.x = sizeMapping.waveNum == 1 ? 64 : 256;
         rv.workGroupSize.y = 1;
         rv.workGroupSize.z = 1;
 
@@ -1703,7 +1703,7 @@ namespace Tensile
 
             rv.args.reserve(512, 64);
 
-            rv.workGroupSize.x = 256;
+        rv.workGroupSize.x = 256;
             rv.workGroupSize.y = 1;
             rv.workGroupSize.z = 1;
 
