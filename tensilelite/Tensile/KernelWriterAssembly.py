@@ -1959,7 +1959,7 @@ class KernelWriterAssembly(KernelWriter):
       module.add(SAndB32(dst=sgpr(tmpSgprGSU.idx), src0=sgpr("GSU"), src1=hex(0x3FFF), comment="Restore GSU"))
       module.add(SCmpEQU32(src0=sgpr(tmpSgprGSU.idx), src1=1, comment="GSU == 1 ?"))
       module.add(SCBranchSCC1(labelName=gsuLabel.getLabelName(), comment="branch if GSU == 1"))
-    
+
     if ((kernel["GlobalSplitUAlgorithm"] == 'MultipleBufferSingleKernel')):
       extReadEpilogueLabeltmp    = Label(label=self.labels.getNameInc("LoadExternalEpilogueStruct"), comment="")
       module.addComment0("Check if custom structure pointer is null")
@@ -1991,7 +1991,7 @@ class KernelWriterAssembly(KernelWriter):
       # wg1       = wg1 % numWg1
       module.add(scalarUInt32DivideAndRemainder("GSUSumIdx", "WorkGroup1", "NumWorkGroups1", "WorkGroup1", tmpVgprRes, kernel["WavefrontSize"]))
       module.add(gsuwgmrrLabelEnd)
-    
+
     module.add(SMovB32(dst=sgpr("GSULog2BpeC"), src=log2(int(self.states.bpr * kernel["ProblemType"]["DestDataType"].numRegisters()))))
     module.add(SMovB32(dst=sgpr("GSULog2BpeD"), src=log2(self.states.bpeCinternal)))
 
@@ -2824,7 +2824,7 @@ class KernelWriterAssembly(KernelWriter):
           if divider != 1:
             depthUDiv = depthU // divider
             gsuOffsetStr = "gsuOffset = DepthU/%s*bpeGR*GSUSumIdx"%(divider)
-        
+
         gsucLabel    = Label(label=self.labels.getNameInc("GSUC_A" if tP["isA"] else "GSUC_B"), comment="")
         gsucLabelEnd = Label(label=self.labels.getNameInc("GSUC_A_End" if tP["isA"] else "GSUC_B_End"), comment="")
         module.add(SAndB32(dst=sgpr(tmpSgprInfo.idx), src0=sgpr("GSU"), src1=hex(0x8000), comment="SCC = (GSUC == 1) ?"))
@@ -3081,7 +3081,7 @@ class KernelWriterAssembly(KernelWriter):
 
           if isMirrorIdx:
             m.setMinus(True)
-          
+
           incr = sgpr("GlobalReadIncs%s+%u"%(tc, loopIdx))
           duBpe = "DepthU*Bpe%s"%(tcGR)
           # multiply by stride, optimizing if unit stride
@@ -3090,7 +3090,7 @@ class KernelWriterAssembly(KernelWriter):
           else:
             module.add(SCMovB32(dst=m, src=duBpe, comment="DepthU*Bpe if GSUC = 1"))
             module.add(SMulI32(dst=incr, src0=m, src1=stride, comment="incr%s unrollIdx)"%(tc) ))
-          
+
           if kernel["ProblemType"]["Sparse"]:
             if tP["is_sparse"]:
               module.add(SLShiftRightB32(dst=incr, shiftHex=hex(log2(2)), src=incr))
@@ -4023,7 +4023,7 @@ class KernelWriterAssembly(KernelWriter):
           module.add(SMinU32(dst=loopCounter, src0=sgpr(dividend), src1=loopCounter, comment="" ))
           self.vgprPool.checkIn(wave_id)
           self.vgprPool.checkIn(tmpVgpr)
-      
+
       remainder    = "GSUSumIdx+1" # numIterPerWgRemainder
       gsucLabel    = Label(label=self.labels.getNameInc("GSUC_TL"), comment="")
       gsucLabelEnd = Label(label=self.labels.getNameInc("GSUC_TL_End"), comment="")
@@ -10527,7 +10527,7 @@ class KernelWriterAssembly(KernelWriter):
                               comment="Local address scaled by BPE"))
     if kernel["LdsOffsetBias"] != 0:
       module.add(VAddU32(dst=vgpr(offsetVgpr), \
-                         src0=(kernel["LdsOffsetBias"]*kernel["ProblemType"]["DataType"].numBytes()), \
+                         src0=(kernel["LdsOffsetBias"]*kernel["ProblemType"]["DataType"].numBytes() + 1024), \
                          src1=vgpr(offsetVgpr), \
                          comment="add lds offset"))
 
