@@ -27,9 +27,11 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Tuple
 
-from ..Common import initAsmCaps, initArchCaps, initRegisterCaps, initAsmBugs
+from .Capabilities import initAsmCaps, initArchCaps, initRegisterCaps, initAsmBugs
 from .Formatting import __TI_DEBUG_LEVEL__, printExit
 
+
+import rocisa
 
 def fastdeepcopy(x):
     # Note: Some object can't be pickled

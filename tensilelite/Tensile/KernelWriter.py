@@ -26,7 +26,7 @@ from .TensileInstructions import TensileInstructions, replaceHolder, \
                           KernelBody, Module, StructuredModule, TextBlock, Dump, LabelManager, \
                           RegisterPool, Assert, fastdeepcopy, TensileInstructionsPassOptions, \
                           TensileInstructionsPass, ValueSet, RegSet, \
-                          SLongBranchPositive, SBranch, SCBranchSCC0, SCBranchSCC1
+                          SLongBranchPositive, SBranch, SCBranchSCC0, SCBranchSCC1, SemanticVersion
 from .TensileInstructions.Instructions import *
 from .KernelWriterModules import *
 from .TensilePass import TensilePass, TensilePassOptions
@@ -36,7 +36,7 @@ from .CustomKernels import isCustomKernelConfig
 from .SolutionStructs import Solution, isPackedIndex
 from .AsmMemoryInstruction import MemoryInstruction
 from .Activation import ActivationModule
-from .Common import globalParameters, printWarning, roundUp, print2, printExit, DataDirection, SemanticVersion, \
+from .Common import globalParameters, printWarning, roundUp, print2, printExit, DataDirection, \
   INDEX_CHARS, MAX_FILENAME_LENGTH
 
 import abc

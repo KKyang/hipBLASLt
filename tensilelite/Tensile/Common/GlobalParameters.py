@@ -32,8 +32,8 @@ from copy import deepcopy
 
 from Tensile import __version__
 
-from .Architectures import gfxToIsa, isaToGfx
-from .Capabilities import initArchCaps, initAsmBugs, initAsmCaps
+from ..TensileInstructions.Architectures import gfxToIsa, isaToGfx
+from ..TensileInstructions.Capabilities import initArchCaps, initAsmBugs, initAsmCaps
 from .Utilities import locateExe, versionIsCompatible
 
 startTime = time.time()

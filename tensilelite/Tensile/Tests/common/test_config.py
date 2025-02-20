@@ -25,7 +25,11 @@
 import os
 import pytest
 import subprocess
+import sys
 import yaml
+
+module_build_dir = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "..", "..", "..", "rocisa", "build"))
+sys.path.append(module_build_dir + "/lib")
 
 from Tensile import Tensile
 from Tensile.TensileInstructions import DataType

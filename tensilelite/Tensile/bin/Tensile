@@ -23,6 +23,22 @@
 # SOFTWARE.
 #
 ################################################################################
+import subprocess
+import sys
+import os
+try:
+    print("### Building rocisa")
+    module_build_dir = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "..", "..", "rocisa", "build"))
+    if not os.path.exists(module_build_dir):
+        os.makedirs(module_build_dir)
+    command = ["cd" + " " + module_build_dir + " && cmake -DCMAKE_PREFIX_PATH=$(python3 -m nanobind --cmake_dir) .. && make -j8"]
+    result = subprocess.run(command, check=True, shell=True, capture_output=True, text=True)
+    print(result.stdout)
+    sys.path.append(module_build_dir + "/lib")
+except subprocess.CalledProcessError as e:
+    print(f"Build failed: {e.stderr}")
+    sys.exit(1)
+import rocisa
 
 try:
     from Tensile import Tensile

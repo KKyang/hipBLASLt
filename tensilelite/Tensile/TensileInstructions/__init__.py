@@ -27,6 +27,7 @@ import sys
 if not (sys.version_info[0] >= 3 and sys.version_info[1] >= 6):
     raise Exception("Must be using Python 3.6 or above")
 
+from .Architectures import *
 from .Base import *
 from .Code import *
 from .Containers import *
@@ -39,4 +40,5 @@ from .Macros import *
 from .Math import *
 from .Pass import *
 from .RegisterPool import *
+from .Types import *
 from .Utils import *

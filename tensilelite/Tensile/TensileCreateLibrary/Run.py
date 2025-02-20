@@ -35,20 +35,17 @@ from Tensile import SOURCE_PATH, LibraryIO
 from Tensile.Common import (
     HR,
     CHeader,
-    IsaVersion,
     ParallelMap2,
-    SemanticVersion,
-    architectureMap,
     assignGlobalParameters,
     ensurePath,
     globalParameters,
-    isaToGfx,
     print1,
     print2,
     printExit,
     state,
     tqdm,
 )
+from Tensile.TensileInstructions import architectureMap, IsaVersion, isaToGfx, SemanticVersion
 from Tensile.CustomYamlLoader import load_logic_gfx_arch
 from Tensile.KernelWriterAssembly import KernelWriterAssembly
 from Tensile.KernelWriterBase import (

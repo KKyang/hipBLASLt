@@ -9,7 +9,7 @@ from typing import List, Tuple
 
 from Tensile import __version__
 
-from .Architectures import isaToGfx
+from ..TensileInstructions.Architectures import isaToGfx
 
 
 # get param values from structures.
