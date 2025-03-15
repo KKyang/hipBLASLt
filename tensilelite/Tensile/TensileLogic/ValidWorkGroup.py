@@ -22,31 +22,26 @@
 #
 ################################################################################
 
-import rocisa
-from typing import List, Dict
+"""
+ValidWorkGroup
+---
+Dimensions of the workgroup which will operate on a tile and share lds
+Example: ( wg0 x wg1 x LocalSplitU )
+"""
 
-from .Types import IsaVersion, IsaInfo
+from pathlib import Path
 
-def makeIsaInfoMap(targetIsas: List[IsaVersion], cxxCompiler: str) -> Dict[IsaVersion, IsaInfo]:
-    """Computes the supported capabilities for requested ISAs and compiler.
+from Tensile.Common import elineno
+from Tensile.SolutionStructs.Validators.WorkGroup import validateWorkGroup
 
-    Given a list of ISAs and a compiler, the ASM, Arch, Register capabilities
-    and ASM bugs are computed and stored in a map.
 
-    Args:
-        targetIsas: A list of requested ISA versions to inspect.
-        cxxCompiler: A string path to a C++ compiler to use when computing capabilities.
-
-    Returns:
-        A map of ISA versions to capabilities.
-    """
-    isaInfoMap = {}
-    ti = rocisa.rocIsa.getInstance()
-    for v in targetIsas:
-        ti.init(v, cxxCompiler, False)
-        asmCaps = ti.getIsaInfo(v).asmCaps
-        archCaps = ti.getIsaInfo(v).archCaps
-        regCaps = ti.getIsaInfo(v).regCaps
-        asmBugs = ti.getIsaInfo(v).asmBugs
-        isaInfoMap[v] = IsaInfo(asmCaps, archCaps, regCaps, asmBugs)
-    return isaInfoMap
+def _validateWorkGroup(solution: dict, filepath: Path):
+    try:
+        validateWorkGroup(solution)
+        assert solution["Valid"], f"Solution was rejected: {elineno()}"
+        return True
+    except AssertionError as e:
+        print(
+            f"Error: Validation failed: {e} (file: {filepath}, index: {solution['SolutionIndex']})"
+        )
+        return False
